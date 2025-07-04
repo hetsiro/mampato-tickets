@@ -16,11 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased flex flex-col min-h-full min-w-screen bg-[var(--primary-light)] overflow-hidden`}
+        className={`antialiased flex flex-col min-h-screen bg-[var(--primary-light)]`}
       >
         <div className="absolute h-full w-full sunburst-bg-half -z-10" />
         <Header />
-        {/* <HeaderMobile /> */}
         {children}
         <Footer />
         {/* <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 sunburst-bg-animated -z-10" /> */}

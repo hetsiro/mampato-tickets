@@ -5,8 +5,8 @@ import { signika } from "../fonts";
 export const Footer = () => {
   return (
     <>
-      <footer className={`hidden md:flex bg-[var(--primary-dark)] `}>
-        <div className="min-w-[980px] max-w-[980px] mx-auto py-4 px-4">
+      <footer className={`hidden md:flex bg-[var(--primary-dark)]`}>
+        <div className="min-w-[980px] mx-auto py-4 px-4 bg-[var(--primary-dark)]">
           <div className="flex py-4 justify-center items-center">
             <section className="flex flex-col justify-center text-white text-2xl w-full">
               <a
@@ -214,7 +214,7 @@ export const Footer = () => {
           </div>
         </section>
 
-        <div className="flex flex-col justify-center items-center text-white text-[6vw] font-semibold w-full border-y-1 py-2">
+        <div className="flex flex-col justify-center items-center text-white text-[6vw] font-semibold w-full border-y-1 py-6">
           <a href="https://www.mampato.cl/trabaja-con-nosotros">
             Trabaja con Nosotros
           </a>
