@@ -165,10 +165,9 @@ export const Header = () => {
         </nav>
       </header>
 
-
       {/* Version Mobile */}
       <header
-        className={`${evogria.className} flex justify-between items-center p-4 md:hidden w-full`}
+        className={`${evogria.className} flex md:hidden justify-between items-center p-4 w-full`}
       >
         {/* Logo */}
         <div className="flex flex-col flex-grow px-4">
@@ -195,84 +194,82 @@ export const Header = () => {
             />
           </a>
         </div>
-      </header>
-
-      {/* Botón hamburguesa sticky */}
-      <button
-        onClick={toggleMenu}
-        className="fixed top-4 right-4 z-10 p-3 bg-white rounded-full shadow-lg md:hidden"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--primary-dark)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <button
+          onClick={toggleMenu}
+          className="fixed top-4 right-4 z-10 p-3 bg-white rounded-full shadow-lg"
         >
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-
-      {/* Overlay */}
-      {isMenuOpen && (
-        <div
-          className="fixed inset-0 z-10 transition-opacity duration-300"
-          onClick={closeMenu}
-        />
-      )}
-
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-[80vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {/* Header del drawer */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-200">
-          <h2
-            className={`${evogria.className} text-lg font-bold text-[var(--primary-dark)]`}
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="var(--primary-dark)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            MENÚ
-          </h2>
-          <button
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        {/* Overlay */}
+        {isMenuOpen && (
+          <div
+            className="fixed inset-0 z-10 transition-opacity duration-300"
             onClick={closeMenu}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
+          />
+        )}
 
-        {/* Contenido del drawer */}
-        <nav className="flex flex-col p-4 space-y-2 pb-8">
-          {ALL_MOBILE_BUTTONS.map((button, index) => (
-            <a
-              key={index}
-              href={button.url}
-              onClick={closeMenu}
-              className={`${evogria.className} w-full p-4 text-[5vw] font-medium text-[var(--primary-dark)] rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md`}
+        {/* Drawer */}
+        <div
+          className={`fixed top-0 right-0 h-full w-[80vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Header del drawer */}
+          <div className="flex justify-between items-center p-4 border-b border-gray-200">
+            <h2
+              className={`${evogria.className} text-lg font-bold text-[var(--primary-dark)]`}
             >
-              {button.buttonText}
-            </a>
-          ))}
-        </nav>
-      </div>
+              MENÚ
+            </h2>
+            <button
+              onClick={closeMenu}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          {/* Contenido del drawer */}
+          <nav className="flex flex-col p-4 space-y-2 pb-8">
+            {ALL_MOBILE_BUTTONS.map((button, index) => (
+              <a
+                key={index}
+                href={button.url}
+                onClick={closeMenu}
+                className={`${evogria.className} w-full p-4 text-[5vw] font-medium text-[var(--primary-dark)] rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md`}
+              >
+                {button.buttonText}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </header>
     </>
   );
 };

@@ -13,41 +13,41 @@
   min-width: 4000px;
   min-height: 4000px;
   background: conic-gradient(
-    var(--primary) 0deg 22.5deg,
-    var(--primary-light) 22.5deg 45deg,
-    var(--primary) 45deg 67.5deg,
-    var(--primary-light) 67.5deg 90deg,
-    var(--primary) 90deg 112.5deg,
-    var(--primary-light) 112.5deg 135deg,
-    var(--primary) 135deg 157.5deg,
-    var(--primary-light) 157.5deg 180deg,
-    var(--primary) 180deg 202.5deg,
-    var(--primary-light) 202.5deg 225deg,
-    var(--primary) 225deg 247.5deg,
-    var(--primary-light) 247.5deg 270deg,
-    var(--primary) 270deg 292.5deg,
-    var(--primary-light) 292.5deg 315deg,
-    var(--primary) 315deg 337.5deg,
-    var(--primary-light) 337.5deg 360deg
+    var(--primary) 0deg 11.25deg,
+    var(--primary-light) 11.25deg 22.5deg,
+    var(--primary) 22.5deg 33.75deg,
+    var(--primary-light) 33.75deg 45deg,
+    var(--primary) 45deg 56.25deg,
+    var(--primary-light) 56.25deg 67.5deg,
+    var(--primary) 67.5deg 78.75deg,
+    var(--primary-light) 78.75deg 90deg,
+    var(--primary) 90deg 101.25deg,
+    var(--primary-light) 101.25deg 112.5deg,
+    var(--primary) 112.5deg 123.75deg,
+    var(--primary-light) 123.75deg 135deg,
+    var(--primary) 135deg 146.25deg,
+    var(--primary-light) 146.25deg 157.5deg,
+    var(--primary) 157.5deg 168.75deg,
+    var(--primary-light) 168.75deg 180deg,
+    var(--primary) 180deg 191.25deg,
+    var(--primary-light) 191.25deg 202.5deg,
+    var(--primary) 202.5deg 213.75deg,
+    var(--primary-light) 213.75deg 225deg,
+    var(--primary) 225deg 236.25deg,
+    var(--primary-light) 236.25deg 247.5deg,
+    var(--primary) 247.5deg 258.75deg,
+    var(--primary-light) 258.75deg 270deg,
+    var(--primary) 270deg 281.25deg,
+    var(--primary-light) 281.25deg 292.5deg,
+    var(--primary) 292.5deg 303.75deg,
+    var(--primary-light) 303.75deg 315deg,
+    var(--primary) 315deg 326.25deg,
+    var(--primary-light) 326.25deg 337.5deg,
+    var(--primary) 337.5deg 348.75deg,
+    var(--primary-light) 348.75deg 360deg
   );
   background-repeat: no-repeat;
   animation: spin-sunburst 200s linear infinite;
-  filter: blur(1px);
-}
-
-.sunburst-bg-half {
-  background: conic-gradient(
-    from 270deg at 50% 100%, 
-    var(--primary) 0deg 22.5deg,
-    var(--primary-light) 22.5deg 45deg,
-    var(--primary) 45deg 67.5deg,
-    var(--primary-light) 67.5deg 90deg,
-    var(--primary) 90deg 112.5deg,
-    var(--primary-light) 112.5deg 135deg,
-    var(--primary) 135deg 157.5deg,
-    var(--primary-light) 157.5deg 180deg,
-    transparent 180deg
-  );
   filter: blur(1px);
 }
 

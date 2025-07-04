@@ -131,7 +131,7 @@ export const Footer = () => {
           alt="mampato-logo-inferior"
           width={550}
           height={256}
-          className="w-1/2 h-auto"
+          className="w-2/3 h-auto"
         />
         <form
           className={`${signika.className} flex flex-col justify-center items-center w-full pt-8`}

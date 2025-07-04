@@ -16,13 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased flex flex-col min-h-screen bg-[var(--primary-light)]`}
+        className={`antialiased flex flex-col min-h-screen bg-[var(--primary-light)] overflow-hidden`}
       >
-        <div className="absolute h-full w-full sunburst-bg-half -z-10" />
+        {/* <div className="absolute h-full w-full sunburst-bg-half -z-10" /> */}
         <Header />
         {children}
         <Footer />
-        {/* <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 sunburst-bg-animated -z-10" /> */}
+        <div className="fixed left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 sunburst-bg-animated -z-10" />
       </body>
     </html>
   );
