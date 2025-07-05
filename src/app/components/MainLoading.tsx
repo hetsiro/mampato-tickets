@@ -1,52 +1,31 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 interface MainLoadingProps {
-  onComplete: () => void;
-  dataReady?: boolean;
+  loading: boolean;
 }
 
-export function MainLoading({ onComplete, dataReady = false }: MainLoadingProps) {
+export function MainLoading({ loading }: MainLoadingProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // La rotación ya está activa desde el inicio
-
-    // Si los datos están listos, mantener el loading por 2 segundos adicionales
-    if (dataReady) {
+    // Solo ejecutar cuando loading sea false
+    if (!loading) {
       const completionTimer = setTimeout(() => {
         setIsVisible(false);
-        
-        // Llamar onComplete después de que termine la animación de salida
-        setTimeout(() => {
-          onComplete();
-        }, 500);
-      }, 2000); // 2 segundos adicionales después de que los datos estén listos
+      }, 1000); // 2 segundos adicionales después de que termine la carga
 
       return () => {
         clearTimeout(completionTimer);
       };
     }
-
-    // Si los datos no están listos, mantener el loading por 2 segundos
-    const completionTimer = setTimeout(() => {
-      setIsVisible(false);
-      
-      // Llamar onComplete después de que termine la animación de salida
-      setTimeout(() => {
-        onComplete();
-      }, 500);
-    }, 2000);
-
-    return () => {
-      clearTimeout(completionTimer);
-    };
-  }, [onComplete, dataReady]);
+  }, [loading]);
 
   return (
     <div
-      className={`fixed inset-0 z-50 transition-transform duration-500 ease-in-out ${
+      className={`fixed inset-0 z-50 transition-transform duration-1000 ease-in-out ${
         isVisible ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -57,13 +36,15 @@ export function MainLoading({ onComplete, dataReady = false }: MainLoadingProps)
       <div className="relative h-full flex items-center justify-center">
         {/* Logo con animación de rotación */}
         <div className="text-center">
-          <div className="rotate-360">
+          <div className="scale-logo-animation">
             {/* Logo de Mampato */}
-            <div className="w-32 h-32 mx-auto mb-6">
-              <img
+            <div className="w-48 h-auto mx-auto mb-6">
+              <Image
                 src="/pngs/mampato-logo.png"
                 alt="Mampato"
                 className="w-full h-full object-contain"
+                width={532}
+                height={159}
               />
             </div>
           </div>
@@ -81,4 +62,4 @@ export function MainLoading({ onComplete, dataReady = false }: MainLoadingProps)
       </div>
     </div>
   );
-} 
+}

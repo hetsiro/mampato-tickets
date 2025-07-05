@@ -11,6 +11,7 @@ import {
   ParamsFechasResponse,
   CalendarLimits,
   OficinaVentaResponse,
+  OficinaVentaCompleta,
   ComunaOption,
   CheckDiscountRequest,
   CheckDiscountResponse,
@@ -22,6 +23,8 @@ import { TicketSelector } from "./components/TicketSelector";
 import { UserForm } from "./components/UserForm";
 import { DateSelector } from "./components/DateSelector";
 import { comunasFallback } from "@/app/utils/comunasFallback";
+import { MainLoading } from "@/app/components/MainLoading";
+import Link from "next/link";
 
 interface ParquePageProps {
   params: Promise<{
@@ -69,7 +72,8 @@ export default function ParquePage({ params }: ParquePageProps) {
     inicio: string;
     termino: string;
   } | null>(null);
-  const [maxTicketsPorVenta, setMaxTicketsPorVenta] = useState<number>(50);
+  const [oficinaActual, setOficinaActual] =
+    useState<OficinaVentaCompleta | null>(null);
   const [codigoDescuento, setCodigoDescuento] = useState<string>("");
   const [descuentoAplicado, setDescuentoAplicado] = useState<number>(0);
   const [loadingDescuento, setLoadingDescuento] = useState<boolean>(false);
@@ -135,7 +139,10 @@ export default function ParquePage({ params }: ParquePageProps) {
       setProductos(productosResponse.data.data);
 
       // Actualizar horarios desde RangosHorariosFecha
-      if (productosResponse.data.data.RangosHorariosFecha && productosResponse.data.data.RangosHorariosFecha.length > 0) {
+      if (
+        productosResponse.data.data.RangosHorariosFecha &&
+        productosResponse.data.data.RangosHorariosFecha.length > 0
+      ) {
         const rangoHorario = productosResponse.data.data.RangosHorariosFecha[0]; // Tomar el primer rango
         setHorarios({
           inicio: rangoHorario.Horainicio,
@@ -172,41 +179,51 @@ export default function ParquePage({ params }: ParquePageProps) {
               OficinaVentaId: oficinaId,
               FechaAsistencia: getCurrentDate(),
             }),
-            api.get<ComunasResponse>("/api/webutiles/listaComunas").catch(() => null),
+            api
+              .get<ComunasResponse>("/api/webutiles/listaComunas")
+              .catch(() => null),
             api.get<OficinaVentaResponse>("/api/OficinaVenta/ListarWeb"),
           ]);
 
         setProductos(productosResponse.data.data);
-        
+
         // Actualizar horarios desde RangosHorariosFecha
-        if (productosResponse.data.data.RangosHorariosFecha && productosResponse.data.data.RangosHorariosFecha.length > 0) {
-          const rangoHorario = productosResponse.data.data.RangosHorariosFecha[0]; // Tomar el primer rango
+        if (
+          productosResponse.data.data.RangosHorariosFecha &&
+          productosResponse.data.data.RangosHorariosFecha.length > 0
+        ) {
+          const rangoHorario =
+            productosResponse.data.data.RangosHorariosFecha[0]; // Tomar el primer rango
           setHorarios({
             inicio: rangoHorario.Horainicio,
             termino: rangoHorario.Horafin,
           });
         }
-        
+
         // Intentar cargar comunas desde la API, si falla usar fallback
         if (comunasResponse) {
-          setComunas(comunasResponse.data.data.map(comuna => ({
-            value: comuna.ComunaId.toString(),
-            label: comuna.Nombre
-          })));
+          setComunas(
+            comunasResponse.data.data.map((comuna) => ({
+              value: comuna.ComunaId.toString(),
+              label: comuna.Nombre,
+            }))
+          );
         } else {
-          console.warn('Error cargando comunas desde API, usando fallback');
-          setComunas(comunasFallback.map(comuna => ({
-            value: comuna.ComunaId.toString(),
-            label: comuna.Nombre
-          })));
+          console.warn("Error cargando comunas desde API, usando fallback");
+          setComunas(
+            comunasFallback.map((comuna) => ({
+              value: comuna.ComunaId.toString(),
+              label: comuna.Nombre,
+            }))
+          );
         }
 
-        // Encontrar la oficina correspondiente y obtener MaximoTicketsPorVenta
+        // Encontrar la oficina correspondiente y guardar toda la información
         const oficina = oficinaResponse.data.data.find(
           (o) => o.OficinaVentaId === oficinaId
         );
         if (oficina) {
-          setMaxTicketsPorVenta(oficina.MaximoTicketsPorVenta);
+          setOficinaActual(oficina);
         }
 
         // Inicializar cantidades de tickets en 0
@@ -278,7 +295,7 @@ export default function ParquePage({ params }: ParquePageProps) {
 
       const requestBody: CheckDiscountRequest = {
         OficinaVentaId: oficinaId,
-        Codigo: codigoDescuento.trim()
+        Codigo: codigoDescuento.trim(),
       };
 
       const response = await api.post<CheckDiscountResponse>(
@@ -291,7 +308,9 @@ export default function ParquePage({ params }: ParquePageProps) {
         // Por ahora simulamos un descuento del 10%
         const descuento = precioTotal * 0.1;
         setDescuentoAplicado(descuento);
-        alert(`Código de descuento aplicado: -$${descuento.toLocaleString('es-CL')}`);
+        alert(
+          `Código de descuento aplicado: -$${descuento.toLocaleString("es-CL")}`
+        );
       } else {
         // Código inválido
         alert(response.data.mensaje || "Código de descuento inválido");
@@ -299,7 +318,9 @@ export default function ParquePage({ params }: ParquePageProps) {
       }
     } catch (error) {
       console.error("Error al validar código de descuento:", error);
-      alert("Error al validar el código de descuento. Por favor intenta nuevamente.");
+      alert(
+        "Error al validar el código de descuento. Por favor intenta nuevamente."
+      );
       setDescuentoAplicado(0);
     } finally {
       setLoadingDescuento(false);
@@ -316,7 +337,8 @@ export default function ParquePage({ params }: ParquePageProps) {
   );
   const cupoDisponible = productos?.CupoTotal || 0;
   const excedeCupo = totalTicketsSelected > cupoDisponible;
-  const excedeMaxTickets = totalTicketsSelected > maxTicketsPorVenta;
+  const excedeMaxTickets =
+    totalTicketsSelected > (oficinaActual?.MaximoTicketsPorVenta || 50);
 
   // Manejar submit del formulario
   const handleFormSubmit = async (formData: UserFormData) => {
@@ -326,7 +348,11 @@ export default function ParquePage({ params }: ParquePageProps) {
     }
 
     if (excedeMaxTickets) {
-      alert(`La cantidad de tickets seleccionados excede el máximo permitido por venta (${maxTicketsPorVenta} tickets)`);
+      alert(
+        `La cantidad de tickets seleccionados excede el máximo permitido por venta (${
+          oficinaActual?.MaximoTicketsPorVenta || 50
+        } tickets)`
+      );
       return;
     }
 
@@ -344,21 +370,21 @@ export default function ParquePage({ params }: ParquePageProps) {
       setLoadingPago(true);
 
       // Preparar productos para el pago
-      const productosPago = productos.Productos
-        .filter(producto => (ticketQuantities[producto.ProductoId] || 0) > 0)
-        .map(producto => ({
-          Producto: producto.Nombre,
-          ProductoId: producto.ProductoId,
-          Cantidad: ticketQuantities[producto.ProductoId] || 0,
-          Precio: producto.Precio,
-          AfectaDescuento: producto.AfectoDescuento === "SI"
-        }));
+      const productosPago = productos.Productos.filter(
+        (producto) => (ticketQuantities[producto.ProductoId] || 0) > 0
+      ).map((producto) => ({
+        Producto: producto.Nombre,
+        ProductoId: producto.ProductoId,
+        Cantidad: ticketQuantities[producto.ProductoId] || 0,
+        Precio: producto.Precio,
+        AfectaDescuento: producto.AfectoDescuento === "SI",
+      }));
 
       // Formatear fecha para la API
-      const fechaFormateada = selectedDate.toISOString().split('T')[0];
+      const fechaFormateada = selectedDate.toISOString().split("T")[0];
 
       // Limpiar RUT (remover puntos y guión)
-      const rutLimpio = formData.rut.replace(/[.-]/g, '');
+      const rutLimpio = formData.rut.replace(/[.-]/g, "");
 
       // Preparar datos del cliente
       const cliente: ClientePago = {
@@ -370,7 +396,7 @@ export default function ParquePage({ params }: ParquePageProps) {
         Telefono: formData.telefono,
         Comuna: formData.comuna.label,
         AceptaRecibirInfo: formData.aceptaPromociones ? "SI" : "NO",
-        AceptaTerminos: formData.aceptaTerminos ? "SI" : "NO"
+        AceptaTerminos: formData.aceptaTerminos ? "SI" : "NO",
       };
 
       // Preparar request para WebPay
@@ -385,7 +411,7 @@ export default function ParquePage({ params }: ParquePageProps) {
         SubTotal: precioTotal,
         TotalDescuento: descuentoAplicado,
         Total: precioFinal,
-        TC: ""
+        TC: "",
       };
 
       // Realizar petición a WebPay
@@ -397,17 +423,17 @@ export default function ParquePage({ params }: ParquePageProps) {
       if (response.data.codigo === 0) {
         // Pago generado exitosamente - redirigir a WebPay
         const { UrlAction, Token } = response.data.data;
-        
+
         // Crear formulario para redirigir a WebPay
-        const form = document.createElement('form');
-        form.method = 'POST';
+        const form = document.createElement("form");
+        form.method = "POST";
         form.action = UrlAction;
-        form.style.display = 'none';
+        form.style.display = "none";
 
         // Agregar el token como campo oculto
-        const tokenInput = document.createElement('input');
-        tokenInput.type = 'hidden';
-        tokenInput.name = 'token_ws';
+        const tokenInput = document.createElement("input");
+        tokenInput.type = "hidden";
+        tokenInput.name = "token_ws";
         tokenInput.value = Token;
         form.appendChild(tokenInput);
 
@@ -427,16 +453,7 @@ export default function ParquePage({ params }: ParquePageProps) {
   };
 
   if (loading) {
-    return (
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">
-            Cargando información del parque...
-          </p>
-        </div>
-      </main>
-    );
+    return <MainLoading loading={false} />;
   }
 
   if (error || !productos) {
@@ -455,13 +472,34 @@ export default function ParquePage({ params }: ParquePageProps) {
     <main className="container mx-auto px-4 py-8">
       <div className="max-w-7xl mx-auto">
         {/* Sección superior: Calendario y Tickets */}
-        <div className="bg-white rounded-lg p-8 mb-12">
-          {/* Título de la sección */}
-          <h1 className="text-2xl border-b-2 border-[var(--secondary)] pb-2 md:text-3xl font-bold text-center mb-8 text-[var(--secondary)]">
-            COMPRA TUS TICKETS -{" "}
-            {slug.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase()).toUpperCase()}
-          </h1>
-          
+        <div className="bg-white rounded-lg p-8 mb-12 w-full">
+          <Link
+            href="/"
+            className="bg-[var(--primary-dark)] hover:bg-[var(--secondary)] text-xl text-white transition-all duration-500 cursor-pointer flex justify-center items-center w-full py-3 rounded-md mb-4"
+          >
+            <svg 
+              viewBox="0 0 401.949 401.949" 
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 mr-2"
+            >
+              <path 
+                fill="currentColor" 
+                d="M401.947,159.301c0-8.583-6.949-15.742-15.497-15.889l0,0H197.515c-7.021-1.589-12.309-7.886-12.309-15.369V78.976 c0-8.675-5.397-11.163-11.993-5.535L4.948,190.735c-6.598,5.634-6.598,14.847,0,20.479l168.262,117.29 c6.599,5.632,11.996,3.146,11.996-5.528v-49.067c0-8.673,7.097-15.771,15.771-15.771l185.201-0.276 c8.676-0.004,15.771-7.101,15.771-15.771L401.947,159.301z"
+              />
+            </svg>
+            Cambiar de parque
+          </Link>
+          <div className="flex items-center justify-center gap-4 border-b-2 border-[var(--secondary)] pb-2 mb-4">
+            {/* Título de la sección */}
+            <h1 className="text-2xl md:text-3xl font-bold text-center text-[var(--secondary)]">
+              COMPRA TUS TICKETS -{" "}
+              {slug
+                .replace("-", " ")
+                .replace(/\b\w/g, (l) => l.toUpperCase())
+                .toUpperCase()}
+            </h1>
+          </div>
+
           {/* Grid para calendario y tickets */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Calendario a la izquierda */}
@@ -474,10 +512,12 @@ export default function ParquePage({ params }: ParquePageProps) {
                 horarios={horarios}
               />
             </div>
-            
+
             {/* Tickets a la derecha */}
-            <div className="space-y-6">
-              <h2 className="text-2xl font-semibold text-center">SELECCIONA TUS TICKETS </h2>
+            <div>
+              <h2 className="text-2xl font-semibold text-center mb-2">
+                SELECCIONA TUS TICKETS{" "}
+              </h2>
 
               {loadingProductos ? (
                 <div className="text-center py-12">
@@ -493,7 +533,9 @@ export default function ParquePage({ params }: ParquePageProps) {
                   onQuantityChange={handleQuantityChange}
                   cupoTotal={productos.CupoTotal}
                   totalSelected={totalTicketsSelected}
-                  maxTicketsPorVenta={maxTicketsPorVenta}
+                  maxTicketsPorVenta={
+                    oficinaActual?.MaximoTicketsPorVenta || 50
+                  }
                 />
               )}
 
@@ -505,12 +547,12 @@ export default function ParquePage({ params }: ParquePageProps) {
                   </p>
                 </div>
               )}
-              
+
               {excedeMaxTickets && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                   <p>
-                    La cantidad seleccionada excede el máximo permitido por venta (
-                    {maxTicketsPorVenta} tickets)
+                    La cantidad seleccionada excede el máximo permitido por
+                    venta ({oficinaActual?.MaximoTicketsPorVenta || 50} tickets)
                   </p>
                 </div>
               )}
@@ -518,47 +560,54 @@ export default function ParquePage({ params }: ParquePageProps) {
               {/* Precio Total */}
               {totalTicketsSelected > 0 && (
                 <div className="mt-6 p-4 bg-[var(--primary-dark)] text-white rounded-lg hover:scale-105 transition-all duration-500">
-                  <h3 className="text-lg font-semibold mb-3">Resumen de Compra</h3>
-                  
+                  <h3 className="text-lg font-semibold mb-3">
+                    Resumen de Compra
+                  </h3>
+
                   {/* Desglose de tickets */}
                   <div className="space-y-2 mb-4">
                     {productos.Productos.map((producto) => {
-                      const cantidad = ticketQuantities[producto.ProductoId] || 0;
+                      const cantidad =
+                        ticketQuantities[producto.ProductoId] || 0;
                       if (cantidad === 0) return null;
-                      
+
                       const subtotal = producto.Precio * cantidad;
                       return (
-                        <div key={producto.ProductoId} className="flex justify-between items-center text-sm">
+                        <div
+                          key={producto.ProductoId}
+                          className="flex justify-between items-center text-sm"
+                        >
                           <div className="flex items-center space-x-2">
                             <span className="font-medium">{cantidad}x</span>
                             <span>{producto.Nombre}</span>
                           </div>
                           <div className="text-right">
                             <div className="text-xs opacity-75">
-                              ${producto.Precio.toLocaleString('es-CL')} c/u
+                              ${producto.Precio.toLocaleString("es-CL")} c/u
                             </div>
                             <div className="font-semibold">
-                              ${subtotal.toLocaleString('es-CL')}
+                              ${subtotal.toLocaleString("es-CL")}
                             </div>
                           </div>
                         </div>
                       );
                     })}
                   </div>
-                  
+
                   {/* Línea divisoria */}
                   <div className="border-t border-white/20 mb-3"></div>
-                  
+
                   {/* Total */}
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="text-sm opacity-90">
-                        {totalTicketsSelected} ticket{totalTicketsSelected !== 1 ? 's' : ''} en total
+                        {totalTicketsSelected} ticket
+                        {totalTicketsSelected !== 1 ? "s" : ""} en total
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold">
-                        ${precioTotal.toLocaleString('es-CL')}
+                        ${precioTotal.toLocaleString("es-CL")}
                       </p>
                     </div>
                   </div>
@@ -578,7 +627,9 @@ export default function ParquePage({ params }: ParquePageProps) {
             <UserForm
               comunas={comunas}
               onSubmit={handleFormSubmit}
-              disabled={excedeCupo || excedeMaxTickets || totalTicketsSelected === 0}
+              disabled={
+                excedeCupo || excedeMaxTickets || totalTicketsSelected === 0
+              }
               totalTicketsSelected={totalTicketsSelected}
               precioTotal={precioTotal}
               precioFinal={precioFinal}
@@ -589,6 +640,9 @@ export default function ParquePage({ params }: ParquePageProps) {
               loadingDescuento={loadingDescuento}
               loadingPago={loadingPago}
               productos={productos?.Productos || []}
+              terminosCondiciones={
+                oficinaActual?.TerminosCondicionesVenta || ""
+              }
               ticketQuantities={ticketQuantities}
               selectedDate={selectedDate}
             />

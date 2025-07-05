@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { ComunaOption, UserFormData } from "@/types/api";
 import { useState, useMemo } from "react";
+import Swal from "sweetalert2";
+import { evogria } from "@/app/fonts";
 
 interface UserFormProps {
   comunas: ComunaOption[];
@@ -19,6 +21,7 @@ interface UserFormProps {
   loadingDescuento?: boolean;
   loadingPago?: boolean;
   productos?: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+  terminosCondiciones?: string;
   ticketQuantities?: { [key: number]: number };
   selectedDate?: Date;
 }
@@ -38,6 +41,7 @@ export function UserForm({
   loadingPago = false,
   productos = [],
   ticketQuantities = {},
+  terminosCondiciones,
   selectedDate,
 }: UserFormProps) {
   const [showComunas, setShowComunas] = useState(false);
@@ -388,7 +392,11 @@ export function UserForm({
             className="mt-1"
           />
           <label htmlFor="aceptaTerminos" className="text-sm text-white">
-            Acepto los términos y condiciones *
+            Acepto los <span className="text-yellow-300 cursor-pointer" onClick={() => Swal.fire({
+              title: `<div class="${evogria.className}">Términos y Condiciones</div>`,
+              html: `<div class="${evogria.className}">${terminosCondiciones}</div>`,
+              showCloseButton: true,
+            })}>términos y condiciones</span>
           </label>
         </div>
         {errors.aceptaTerminos && (

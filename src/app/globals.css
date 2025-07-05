@@ -60,11 +60,12 @@
 }
 
 /* Clase para rotación de 360 grados */
-.rotate-360 {
-  animation: rotate-continuous 2s ease-in-out infinite;
+.scale-logo-animation {
+  animation: scale-continuous 2s ease-in-out infinite;
 }
 
-@keyframes rotate-continuous {
+
+@keyframes scale-continuous {
   0% {
     transform: scale(1);
   }
@@ -73,5 +74,24 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes scale-continuous-brightness {
+  0% {
+    transform: scale(1) rotate3d(1, 0, 1, 0deg);
+    filter: brightness(1);
+  }
+  33% {
+    transform: scale(1.1) rotate3d(1, 0, 1, -15deg);
+    filter: brightness(1.4);
+  }
+  66% {
+    transform: scale(1.1) rotate3d(1, 0, 1, 15deg);
+    filter: brightness(1.9);
+  }
+  100% {
+    transform: scale(1) rotate3d(1, 0, 1, 0deg);
+    filter: brightness(1);
   }
 }

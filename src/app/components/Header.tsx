@@ -96,9 +96,9 @@ export const Header = () => {
   return (
     <>
       <header
-        className={`${evogria.className} text-sm flex-col justify-center items-center gap-4 hidden md:flex md:w-[980px] mx-auto mb-5`}
+        className={`${evogria.className} text-sm flex-col justify-center items-center gap-4 hidden md:flex md:w-[980px] mx-auto pt-10`}
       >
-        <a href={HEADER_CONFIG.logo.url}>
+        <a href={HEADER_CONFIG.logo.url} className="hover:animate-[scale-continuous-brightness_4s_ease-in-out_infinite]">
           <Image
             alt={HEADER_CONFIG.logo.alt}
             src={HEADER_CONFIG.logo.src}
@@ -167,7 +167,7 @@ export const Header = () => {
 
       {/* Version Mobile */}
       <header
-        className={`${evogria.className} flex md:hidden justify-between items-center p-4 w-full`}
+        className={`${evogria.className} flex md:hidden justify-between items-center px-4 pt-4 w-full`}
       >
         {/* Logo */}
         <div className="flex flex-col flex-grow px-4">

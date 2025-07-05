@@ -22,7 +22,7 @@ export default function RootLayout({
         {/* <div className="absolute h-full w-full sunburst-bg-half -z-10" /> */}
         <Header />
         <main
-          className={`${evogria.className} flex flex-col flex-grow justify-center items-center h-full w-9/10 md:w-[980px] mx-auto rounded-t-md gap-10 md:p-10`}
+          className={`${evogria.className} flex flex-col flex-grow justify-center items-center h-full w-9/10 md:w-[980px] mx-auto rounded-t-md gap-10 md:px-10`}
         >
           {children}
         </main>
