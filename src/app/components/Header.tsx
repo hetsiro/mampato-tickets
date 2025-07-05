@@ -159,7 +159,7 @@ export const Header = () => {
               src={HEADER_CONFIG.tickets.src}
               width={HEADER_CONFIG.tickets.width}
               height={HEADER_CONFIG.tickets.height}
-              className="col-span-1 hover:brightness-120 transition-all duration-500"
+              className="col-span-1 -mt-2 hover:brightness-120 transition-all duration-500"
             />
           </a>
         </nav>

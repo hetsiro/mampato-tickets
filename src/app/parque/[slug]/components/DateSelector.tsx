@@ -140,7 +140,7 @@ export function DateSelector({
   return (
     <div>
       {/* Título y fecha seleccionada */}
-      <div>
+      <div className="text-center">
         <h3 className="text-2xl font-semibold text-gray-900 mb-2">
           SELECCIONA TU FECHA DE VISITA
         </h3>
@@ -152,10 +152,10 @@ export function DateSelector({
             </span>
           )}
         </p>
-        <div className="text-sm md:text-lg text-white bg-[var(--primary-dark)] px-3 py-2 rounded-lg mb-2 text-center">
-          <p>{formatDate(selectedDate)}</p>
+        <div className="text-sm md:text-lg text-white bg-[var(--primary-dark)] px-3 py-2 rounded-t-lg mb-2 text-center">
+          <p className="font-semibold">{formatDate(selectedDate)}</p>
           {horarios && (
-            <p className="text-xs md:text-sm opacity-90 mt-1">
+            <p className="text-md opacity-90 mt-1">
               Horario: {horarios.inicio} - {horarios.termino}
             </p>
           )}
@@ -163,7 +163,7 @@ export function DateSelector({
       </div>
 
       {/* Calendario siempre visible */}
-      <div className="bg-white md:border-2 md:border-gray-200 md:rounded-xl md:shadow-lg border-none shadow-none p-2 md:p-6 max-w-sm mx-auto">
+      <div className="bg-white md:border-2 md:border-gray-200 md:rounded-b-xl md:shadow-lg border-none shadow-none p-2 md:p-6 max-w-sm mx-auto">
         {/* Header del calendario */}
         <div className="flex items-center justify-between mb-6">
           <button

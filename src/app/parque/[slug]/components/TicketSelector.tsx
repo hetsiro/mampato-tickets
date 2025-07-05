@@ -42,7 +42,7 @@ export function TicketSelector({
 
   return (
     <div className="space-y-4">
-      <div className="text-sm text-gray-600 mb-4">
+      <div className="text-sm text-gray-600 mb-4 text-center">
         <div>Cupo disponible: {cupoTotal - totalSelected} / {cupoTotal}</div>
         <div>Máximo tickets por venta: {totalSelected} / {maxTicketsPorVenta}</div>
       </div>

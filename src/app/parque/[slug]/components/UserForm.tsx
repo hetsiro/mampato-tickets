@@ -28,7 +28,7 @@ export function UserForm({
   onSubmit,
   disabled,
   totalTicketsSelected = 0,
-  precioTotal = 0,
+  // precioTotal = 0,
   precioFinal = 0,
   descuentoAplicado = 0,
   codigoDescuento = "",
@@ -165,7 +165,7 @@ export function UserForm({
       <div>
         <label
           htmlFor="nombre"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Nombre *
         </label>
@@ -179,13 +179,13 @@ export function UserForm({
               message: "El nombre debe tener al menos 2 caracteres",
             },
           })}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full bg-white px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.nombre ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Ingresa tu nombre"
         />
         {errors.nombre && (
-          <p className="mt-1 text-sm text-red-600">{errors.nombre.message}</p>
+          <p className="mt-1 text-sm text-yellow-300">{errors.nombre.message}</p>
         )}
       </div>
 
@@ -193,7 +193,7 @@ export function UserForm({
       <div>
         <label
           htmlFor="apellidos"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Apellidos *
         </label>
@@ -207,13 +207,13 @@ export function UserForm({
               message: "Los apellidos deben tener al menos 2 caracteres",
             },
           })}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full bg-white px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.apellidos ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Ingresa tus apellidos"
         />
         {errors.apellidos && (
-          <p className="mt-1 text-sm text-red-600">
+          <p className="mt-1 text-sm text-yellow-300">
             {errors.apellidos.message}
           </p>
         )}
@@ -223,7 +223,7 @@ export function UserForm({
       <div>
         <label
           htmlFor="rut"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           RUT *
         </label>
@@ -234,14 +234,14 @@ export function UserForm({
             required: "El RUT es obligatorio",
             validate: validateRut,
           })}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full bg-white px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.rut ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="12345678-9"
           onChange={handleRutChange}
         />
         {errors.rut && (
-          <p className="mt-1 text-sm text-red-600">{errors.rut.message}</p>
+          <p className="mt-1 text-sm text-yellow-300">{errors.rut.message}</p>
         )}
       </div>
 
@@ -249,7 +249,7 @@ export function UserForm({
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Email *
         </label>
@@ -263,13 +263,13 @@ export function UserForm({
               message: "Formato de email inválido",
             },
           })}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full bg-white px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.email ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="ejemplo@correo.com"
         />
         {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+          <p className="mt-1 text-sm text-yellow-300">{errors.email.message}</p>
         )}
       </div>
 
@@ -277,7 +277,7 @@ export function UserForm({
       <div>
         <label
           htmlFor="confirmarEmail"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Confirmar Email *
         </label>
@@ -288,13 +288,13 @@ export function UserForm({
             required: "La confirmación de email es obligatoria",
             validate: (value) => value === email || "Los emails no coinciden",
           })}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full bg-white px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.confirmarEmail ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Repite tu email"
         />
         {errors.confirmarEmail && (
-          <p className="mt-1 text-sm text-red-600">
+          <p className="mt-1 text-sm text-yellow-300">
             {errors.confirmarEmail.message}
           </p>
         )}
@@ -304,7 +304,7 @@ export function UserForm({
       <div>
         <label
           htmlFor="telefono"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Teléfono *
         </label>
@@ -318,13 +318,13 @@ export function UserForm({
               message: "El teléfono debe tener 8 o 9 dígitos",
             },
           })}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full bg-white px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.telefono ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="912345678"
         />
         {errors.telefono && (
-          <p className="mt-1 text-sm text-red-600">{errors.telefono.message}</p>
+          <p className="mt-1 text-sm text-yellow-300">{errors.telefono.message}</p>
         )}
       </div>
 
@@ -332,7 +332,7 @@ export function UserForm({
       <div className="relative">
         <label
           htmlFor="comuna"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-white mb-1"
         >
           Comuna *
         </label>
@@ -340,7 +340,7 @@ export function UserForm({
           id="comuna"
           type="text"
           value={comunaInput}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          className={`w-full bg-white px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.comuna ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Buscar o escribir comuna..."
@@ -372,7 +372,7 @@ export function UserForm({
         )}
 
         {errors.comuna && (
-          <p className="mt-1 text-sm text-red-600">{errors.comuna.message}</p>
+          <p className="mt-1 text-sm text-yellow-300">{errors.comuna.message}</p>
         )}
       </div>
 
@@ -387,12 +387,12 @@ export function UserForm({
             })}
             className="mt-1"
           />
-          <label htmlFor="aceptaTerminos" className="text-sm text-gray-700">
+          <label htmlFor="aceptaTerminos" className="text-sm text-white">
             Acepto los términos y condiciones *
           </label>
         </div>
         {errors.aceptaTerminos && (
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-yellow-300">
             {errors.aceptaTerminos.message}
           </p>
         )}
@@ -404,15 +404,15 @@ export function UserForm({
             {...register("aceptaPromociones")}
             className="mt-1"
           />
-          <label htmlFor="aceptaPromociones" className="text-sm text-gray-700">
+          <label htmlFor="aceptaPromociones" className="text-sm text-white">
             Acepto recibir promociones y novedades
           </label>
         </div>
       </div>
 
       {/* Resumen de Compra */}
-      <div className="mt-6 p-4 bg-[var(--primary-dark)] text-white rounded-lg">
-        <h3 className="text-lg font-semibold mb-3 text-center">
+      <div className="mt-6 text-white md:border-white md:border-1 md:rounded-lg border-t-2 md:p-4">
+        <h3 className="text-xl md:text-3xl font-semibold mb-3 text-center pt-2 md:pt-0">
           Resumen de Compra
         </h3>
 
@@ -474,12 +474,12 @@ export function UserForm({
 
             {/* Subtotal y Descuento */}
             <div className="space-y-2 mb-4">
-              <div className="flex justify-between items-center">
+              {/* <div className="flex justify-between items-center">
                 <span className="text-sm">Subtotal:</span>
                 <span className="font-semibold">
                   ${precioTotal.toLocaleString("es-CL")}
                 </span>
-              </div>
+              </div> */}
               {descuentoAplicado > 0 && (
                 <div className="flex justify-between items-center text-green-300">
                   <span className="text-sm">Descuento:</span>

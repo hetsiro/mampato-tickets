@@ -434,7 +434,7 @@ export default function ParquePage({ params }: ParquePageProps) {
           <p className="mt-4 text-gray-600">
             Cargando información del parque...
           </p>
-              </div>
+        </div>
       </main>
     );
   }
@@ -445,8 +445,8 @@ export default function ParquePage({ params }: ParquePageProps) {
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             <p>{error || "Error al cargar los datos del parque"}</p>
-                  </div>
-                </div>
+          </div>
+        </div>
       </main>
     );
   }
@@ -454,119 +454,123 @@ export default function ParquePage({ params }: ParquePageProps) {
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-xl md:text-3xl font-bold text-center mb-8 text-[var(--secondary)]">
-          COMPRA TUS TICKETS -{" "}
-          {slug.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase()).toUpperCase()}
-        </h1>
-
         {/* Sección superior: Calendario y Tickets */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Calendario a la izquierda */}
-          <div className="flex justify-center">
-            <DateSelector
-              selectedDate={selectedDate}
-              onDateChange={handleDateChange}
-              loading={loadingProductos}
-              calendarLimits={calendarLimits}
-              horarios={horarios}
-            />
-          </div>
+        <div className="bg-white rounded-lg p-8 mb-12">
+          {/* Título de la sección */}
+          <h1 className="text-2xl border-b-2 border-[var(--secondary)] pb-2 md:text-3xl font-bold text-center mb-8 text-[var(--secondary)]">
+            COMPRA TUS TICKETS -{" "}
+            {slug.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase()).toUpperCase()}
+          </h1>
           
-          {/* Tickets a la derecha */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">SELECCIONA TUS TICKETS </h2>
-
-            {loadingProductos ? (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-                <p className="mt-4 text-gray-600">
-                  Cargando tickets para la fecha seleccionada...
-                </p>
-              </div>
-            ) : (
-              <TicketSelector
-                productos={productos.Productos}
-                ticketQuantities={ticketQuantities}
-                onQuantityChange={handleQuantityChange}
-                cupoTotal={productos.CupoTotal}
-                totalSelected={totalTicketsSelected}
-                maxTicketsPorVenta={maxTicketsPorVenta}
+          {/* Grid para calendario y tickets */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Calendario a la izquierda */}
+            <div className="flex justify-center">
+              <DateSelector
+                selectedDate={selectedDate}
+                onDateChange={handleDateChange}
+                loading={loadingProductos}
+                calendarLimits={calendarLimits}
+                horarios={horarios}
               />
-            )}
-
-            {excedeCupo && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                <p>
-                  La cantidad seleccionada excede el cupo disponible (
-                  {cupoDisponible} tickets)
-                </p>
             </div>
-          )}
-          
-            {excedeMaxTickets && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                <p>
-                  La cantidad seleccionada excede el máximo permitido por venta (
-                  {maxTicketsPorVenta} tickets)
-                </p>
-              </div>
-            )}
+            
+            {/* Tickets a la derecha */}
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold text-center">SELECCIONA TUS TICKETS </h2>
 
-            {/* Precio Total */}
-            {totalTicketsSelected > 0 && (
-              <div className="mt-6 p-4 bg-[var(--primary-dark)] text-white rounded-lg hover:scale-105 transition-all duration-500">
-                <h3 className="text-lg font-semibold mb-3">Resumen de Compra</h3>
-                
-                {/* Desglose de tickets */}
-                <div className="space-y-2 mb-4">
-                  {productos.Productos.map((producto) => {
-                    const cantidad = ticketQuantities[producto.ProductoId] || 0;
-                    if (cantidad === 0) return null;
-                    
-                    const subtotal = producto.Precio * cantidad;
-                    return (
-                      <div key={producto.ProductoId} className="flex justify-between items-center text-sm">
-                        <div className="flex items-center space-x-2">
-                          <span className="font-medium">{cantidad}x</span>
-                          <span>{producto.Nombre}</span>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xs opacity-75">
-                            ${producto.Precio.toLocaleString('es-CL')} c/u
-                          </div>
-                          <div className="font-semibold">
-                            ${subtotal.toLocaleString('es-CL')}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+              {loadingProductos ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+                  <p className="mt-4 text-gray-600">
+                    Cargando tickets para la fecha seleccionada...
+                  </p>
                 </div>
-                
-                {/* Línea divisoria */}
-                <div className="border-t border-white/20 mb-3"></div>
-                
-                {/* Total */}
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm opacity-90">
-                      {totalTicketsSelected} ticket{totalTicketsSelected !== 1 ? 's' : ''} en total
-                    </p>
+              ) : (
+                <TicketSelector
+                  productos={productos.Productos}
+                  ticketQuantities={ticketQuantities}
+                  onQuantityChange={handleQuantityChange}
+                  cupoTotal={productos.CupoTotal}
+                  totalSelected={totalTicketsSelected}
+                  maxTicketsPorVenta={maxTicketsPorVenta}
+                />
+              )}
+
+              {excedeCupo && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                  <p>
+                    La cantidad seleccionada excede el cupo disponible (
+                    {cupoDisponible} tickets)
+                  </p>
+                </div>
+              )}
+              
+              {excedeMaxTickets && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                  <p>
+                    La cantidad seleccionada excede el máximo permitido por venta (
+                    {maxTicketsPorVenta} tickets)
+                  </p>
+                </div>
+              )}
+
+              {/* Precio Total */}
+              {totalTicketsSelected > 0 && (
+                <div className="mt-6 p-4 bg-[var(--primary-dark)] text-white rounded-lg hover:scale-105 transition-all duration-500">
+                  <h3 className="text-lg font-semibold mb-3">Resumen de Compra</h3>
+                  
+                  {/* Desglose de tickets */}
+                  <div className="space-y-2 mb-4">
+                    {productos.Productos.map((producto) => {
+                      const cantidad = ticketQuantities[producto.ProductoId] || 0;
+                      if (cantidad === 0) return null;
+                      
+                      const subtotal = producto.Precio * cantidad;
+                      return (
+                        <div key={producto.ProductoId} className="flex justify-between items-center text-sm">
+                          <div className="flex items-center space-x-2">
+                            <span className="font-medium">{cantidad}x</span>
+                            <span>{producto.Nombre}</span>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs opacity-75">
+                              ${producto.Precio.toLocaleString('es-CL')} c/u
+                            </div>
+                            <div className="font-semibold">
+                              ${subtotal.toLocaleString('es-CL')}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold">
-                      ${precioTotal.toLocaleString('es-CL')}
-                    </p>
+                  
+                  {/* Línea divisoria */}
+                  <div className="border-t border-white/20 mb-3"></div>
+                  
+                  {/* Total */}
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm opacity-90">
+                        {totalTicketsSelected} ticket{totalTicketsSelected !== 1 ? 's' : ''} en total
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold">
+                        ${precioTotal.toLocaleString('es-CL')}
+                      </p>
+                    </div>
                   </div>
                 </div>
+              )}
             </div>
-            )}
           </div>
         </div>
 
         {/* Sección inferior: Formulario */}
-        <div className="rounded-xl md:p-8 md:shadow-lg md:border md:border-gray-200">
-          <h2 className="text-2xl font-semibold mb-6 text-center">
+        <div className="rounded-xl p-8 md:shadow-lg bg-[var(--primary-dark)]">
+          <h2 className="text-xl md:text-3xl font-semibold mb-6 text-center text-white">
             Datos del Comprador
           </h2>
 
@@ -590,8 +594,7 @@ export default function ParquePage({ params }: ParquePageProps) {
             />
           </div>
         </div>
-
-        </div>
-      </main>
-    );
+      </div>
+    </main>
+  );
 }
