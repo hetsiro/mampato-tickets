@@ -227,14 +227,14 @@ export default function ParquePage({ params }: ParquePageProps) {
     };
 
     fetchInitialData();
-  }, [oficinaId]);
+  }, [oficinaId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Efecto para cargar productos cuando cambia la fecha
   useEffect(() => {
     if (oficinaId && !loading) {
       fetchProductos(selectedDate);
     }
-  }, [selectedDate, oficinaId, loading]);
+  }, [selectedDate, oficinaId, loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Calcular precio total cuando cambian las cantidades
   useEffect(() => {

@@ -129,7 +129,7 @@ export interface CheckDiscountRequest {
 export interface CheckDiscountResponse {
   codigo: number;
   mensaje: string;
-  data: any; // Se actualizará cuando sepamos la estructura exacta
+  data: unknown; // Se actualizará cuando sepamos la estructura exacta
 }
 
 // Tipos para la API de WebPay
@@ -155,7 +155,7 @@ export interface ProductoPago {
 
 export interface GenerarPagoRequest {
   Cliente: ClientePago;
-  Descuento: any; // Se actualizará cuando sepamos la estructura del descuento
+  Descuento: unknown; // Se actualizará cuando sepamos la estructura del descuento
   FechaAsiste: string;
   HoraAsisteIni: string;
   HoraAsisteFin: string;
