@@ -8,10 +8,10 @@
 }
 
 .sunburst-bg-animated {
-  width: 100vw;
+  width: 400vw;
   height: 400vw;
-  min-width: 4000px;
-  min-height: 4000px;
+  min-width: unset;
+  min-height: unset;
   background: conic-gradient(
     var(--primary) 0deg 11.25deg,
     var(--primary-light) 11.25deg 22.5deg,
@@ -48,7 +48,6 @@
   );
   background-repeat: no-repeat;
   animation: spin-sunburst 200s linear infinite;
-  filter: blur(1px);
 }
 
 @keyframes spin-sunburst {
