@@ -18,7 +18,7 @@ interface UserFormProps {
   onAplicarDescuento?: () => void;
   loadingDescuento?: boolean;
   loadingPago?: boolean;
-  productos?: any[];
+  productos?: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   ticketQuantities?: { [key: number]: number };
   selectedDate?: Date;
 }
@@ -420,7 +420,7 @@ export function UserForm({
           <>
             {/* Desglose de tickets */}
             <div className="space-y-2 mb-4">
-              {productos.map((producto: any) => {
+              {productos.map((producto: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
                 const cantidad = ticketQuantities[producto.ProductoId] || 0;
                 if (cantidad === 0) return null;
 
